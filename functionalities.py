@@ -31,7 +31,7 @@ class Funcs():
         self.nome_cliente.set('')
         self.telefone_cliente.set('')
     def conecta_bd(self):
-        self.conn = sqlite3.connect("mecanicacoin.db")
+        self.conn = sqlite3.connect("mecanica.db")
         self.cursor = self.conn.cursor();
         print("Banco de dados conectado")
     def desconecta_bd(self):
@@ -42,7 +42,6 @@ class Funcs():
 
         self.cursor.execute("CREATE TABLE IF NOT EXISTS CLIENTE (CLIENTE_ID INTEGER PRIMARY KEY, NOME TEXT, TELEFONE TEXT)")
         self.cursor.execute("CREATE TABLE IF NOT EXISTS VEICULO (MARCA TEXT, MODELO TEXT, ANO INTEGER, PLACA TEXT PRIMARY KEY, CLIENTE_ID INTEGER, FOREIGN KEY(CLIENTE_ID) REFERENCES CLIENTE(CLIENTE_ID))")
-        self.cursor.execute("CREATE TABLE IF NOT EXISTS HISTORICO (NUM_FICHA INTEGER PRIMARY KEY, CLIENTE_NOME TEXT, VEICULO TEXT, VALOR_SERVICO TEXT, VALOR_PAGO TEXT, VALOR_A_PAGAR TEXT, DATA_HIST)")
         self.conn.commit()
     def add_cliente(self):
         self.nome_cliente_entry = self.nome_cliente.get()

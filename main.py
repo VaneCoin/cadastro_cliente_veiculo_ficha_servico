@@ -28,7 +28,6 @@ class Application(Funcs):
         self.frames_tela()
         self.widgets_frame()
         self.combobox()
-        self.lista_historico()
         self.monta_tabelas()
         self.nome_cliente = StringVar()
         self.telefone_cliente = StringVar()
@@ -53,8 +52,6 @@ class Application(Funcs):
         self.frame2 = Frame(self.root)
         self.frame2.place(relx=0.04, rely=0.16, relwidth=0.9, relheight=0.65)
 
-        self.frame3 = Frame(self.root)
-        self.frame3.place(relx=0.04, rely=0.835, relwidth=0.9, relheight=0.14)
     def widgets_frame(self):
         self.btn_tela_cad_cli = Button(self.frame1, text="Cadastro de Cliente", font=('Georgia 10'), command=self.tela_cadastro_cliente)
         self.btn_tela_cad_cli.place(relx=0.7, rely=0.18, relheight=0.2, relwidth=0.1)
@@ -67,9 +64,6 @@ class Application(Funcs):
 
         self.btn_gerar_ficha = Button(self.frame2, text="Limpar Preenchimento", font=('Georgia 10'), command=self.limpa_tela_principal)
         self.btn_gerar_ficha.place(relx=0.12, rely=0.9, relheight=0.05, relwidth=0.1)
-
-        self.btn_historico = Button(self.frame3, text="Pagamento", font=('Georgia 10'), command=self.tela_pagamento)
-        self.btn_historico.place(relx=0.85, rely=0.40, relheight=0.2, relwidth=0.1)
 
         self.lb_cliente = Label(self.frame1, text="Cliente", font=('Georgia 15'))
         self.lb_cliente.place(relx=0.03, rely=0.01)
@@ -91,9 +85,6 @@ class Application(Funcs):
 
         self.lb_total_valor = Label(self.frame2, text="teste123123", font=('Georgia 15'), bg='#fcba03')
         self.lb_total_valor.place(relx=0.7, rely=0.9)
-
-        self.lb_hist = Label(self.frame3, text="Histórico", font=('Georgia 15'))
-        self.lb_hist.place(relx=0.03, rely=0.03)
 
         self.item_entry1 = Entry(self.frame2, font=('Georgia 15'), justify="right")
         self.item_entry1.place(relx=0.12, rely=0.05, relheight=0.035, relwidth=0.555)
@@ -175,29 +166,6 @@ class Application(Funcs):
 
         self.box_veiculo = ttk.Combobox(root, values=listaveiculos)
         self.box_veiculo.place(relx=0.07, rely=0.098, relheight=0.025, relwidth=0.5)
-    def lista_historico(self):
-        self.listaHistorico = ttk.Treeview(self.frame3, columns=('1', '2', '3', '4', '5', '6', '7'), height=15, show='headings')
-        self.listaHistorico.heading('1', text="Número da Ficha")
-        self.listaHistorico.heading('2', text="Nome do Cliente")
-        self.listaHistorico.heading('3', text="Veículo")
-        self.listaHistorico.heading('4', text="Valor do Serviço")
-        self.listaHistorico.heading('5', text="Valor Pago")
-        self.listaHistorico.heading('6', text="Valor a Pagar")
-        self.listaHistorico.heading('7', text="Data")
-
-        self.listaHistorico.column('1', width=100)
-        self.listaHistorico.column('2', width=400)
-        self.listaHistorico.column('3', width=300)
-        self.listaHistorico.column('4', width=150)
-        self.listaHistorico.column('5', width=150)
-        self.listaHistorico.column('6', width=150)
-        self.listaHistorico.column('7', width=150)
-
-        self.listaHistorico.place(relx=0.03, rely=0.3, relwidth=0.765, relheight=0.6)
-
-        self.scroll_lista_hist = Scrollbar(self.frame3, orient='vertical')
-        self.listaHistorico.configure(yscroll=self.scroll_lista_hist.set)
-        self.scroll_lista_hist.place(relx=0.797, rely=0.3, relwidth=0.02, relheight=0.6)
     def tela_cadastro_cliente(self):
         self.tela_cliente = Toplevel(self.root)
         self.tela_cliente.title("Cadastro de Cliente")
@@ -296,16 +264,6 @@ class Application(Funcs):
         self.treeview_veiculo.column('5', anchor=CENTER, stretch=NO, width=100)
 
         self.treeview_veiculo.place(relx=0.095, rely=0.35, relwidth=0.6, relheight=0.6)
-
-    def tela_pagamento(self):
-        self.tela_pagamento = Toplevel()
-        self.tela_pagamento.title("Pagamento")
-        self.tela_pagamento.configure(background='#e1e5e8')
-        self.tela_pagamento.geometry("800x500")
-        self.tela_pagamento.resizable(False, False)
-        self.tela_pagamento.transient(self.root)
-        self.tela_pagamento.focus_force()
-        self.tela_pagamento.grab_set()
 
 if __name__ == "__main__":
     app = Application(root)

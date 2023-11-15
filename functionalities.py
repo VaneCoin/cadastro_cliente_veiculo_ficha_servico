@@ -32,14 +32,13 @@ class Funcs():
         self.telefone_cliente.set('')
     def conecta_bd(self):
         self.conn = sqlite3.connect("mecanica.db")
-        self.cursor = self.conn.cursor();
+        self.cursor = self.conn.cursor()
         print("Banco de dados conectado")
     def desconecta_bd(self):
         self.conn.close();
         print("Banco de dados desconectado")
     def monta_tabelas(self):
         self.conecta_bd()
-
         self.cursor.execute("CREATE TABLE IF NOT EXISTS CLIENTE (CLIENTE_ID INTEGER PRIMARY KEY, NOME TEXT, TELEFONE TEXT)")
         self.cursor.execute("CREATE TABLE IF NOT EXISTS VEICULO (MARCA TEXT, MODELO TEXT, ANO INTEGER, PLACA TEXT PRIMARY KEY, CLIENTE_ID INTEGER, FOREIGN KEY(CLIENTE_ID) REFERENCES CLIENTE(CLIENTE_ID))")
         self.conn.commit()
@@ -92,5 +91,15 @@ class Funcs():
 
             nomes_formatados = [self.formata_lista_clientes(cliente) for cliente in lista_de_clientes]
             self.box_cliente['values'] = nomes_formatados
+    def atualiza_combobox(self):
+        self.conecta_bd()
+        self.cursor.execute("SELECT * FROM CLIENTE ORDER BY CLIENTE_ID;")
+        global lista_de_clientes
+        lista_de_clientes = self.cursor.fetchall()
+        self.desconecta_bd()
+
+        nomes_formatados = [self.formata_lista_clientes(cliente) for cliente in lista_de_clientes]
+        self.box_cliente['values'] = nomes_formatados
+
     def formata_lista_clientes(self, cliente):
         return f"{cliente[0]} - {cliente[1]} - {cliente[2]}"

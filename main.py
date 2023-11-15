@@ -37,6 +37,7 @@ class Application(Funcs):
         self.limpa_tela_principal()
         self.limpa_tela_cliente()
         self.select_cliente()
+        self.atualiza_combobox()
         root.mainloop()
 
     def tela_inicial(self):
@@ -232,6 +233,9 @@ class Application(Funcs):
         self.lb_placa_veiculo = Label(self.tela_veiculo, text="Placa do Veículo", font="Georgia 15")
         self.lb_placa_veiculo.place(relx=0.35, rely=0.15)
 
+        self.lb_cliente = Label(self.tela_veiculo, text="Cliente", font="Georgia 15")
+        self.lb_cliente.place(relx=0.1, rely=0.31)
+
         self.entry_marca_veiculo = Entry(self.tela_veiculo, font="Georgia 15")
         self.entry_marca_veiculo.place(relx=0.1, rely=0.09, relheight=0.04, relwidth=0.2)
 
@@ -245,7 +249,7 @@ class Application(Funcs):
         self.entry_placa_veiculo.place(relx=0.35, rely=0.19, relheight=0.04, relwidth=0.2)
 
         self.box_cliente_cad_cli = ttk.Combobox(self.tela_veiculo, values=lista_de_clientes)
-        self.box_cliente_cad_cli.place(relx=0.1, rely=0.27, relheight=0.04, relwidth=0.45)
+        self.box_cliente_cad_cli.place(relx=0.1, rely=0.35, relheight=0.04, relwidth=0.45)
 
         self.btn_cadastra_veic = Button(self.tela_veiculo, text="Cadastrar Veículo", font=('Georgia  10'))
         self.btn_cadastra_veic.place(relx=0.75, rely=0.2, relheight=0.04, relwidth=0.2)
@@ -263,7 +267,7 @@ class Application(Funcs):
         self.treeview_veiculo.column('4', anchor=CENTER, stretch=NO, width=100)
         self.treeview_veiculo.column('5', anchor=CENTER, stretch=NO, width=100)
 
-        self.treeview_veiculo.place(relx=0.095, rely=0.35, relwidth=0.6, relheight=0.6)
+        self.treeview_veiculo.place(relx=0.095, rely=0.4, relwidth=0.6, relheight=0.55)
 
 if __name__ == "__main__":
     app = Application(root)

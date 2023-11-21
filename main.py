@@ -9,8 +9,8 @@ from functionalities import Funcs
 # import webbrowser
 
 root = Tk()
-lista_de_clientes = []
-listaveiculos=["FORD KA","RENEGADE","FUSCA"]
+lista_clientes = []
+lista_veiculos=[]
 contador_ficha=0
 
 # class Relatorio():
@@ -31,28 +31,30 @@ class Application(Funcs):
         self.monta_tabelas()
         self.nome_cliente = StringVar()
         self.telefone_cliente = StringVar()
+        self.marca_veiculo = StringVar()
+        self.modelo_veiculo = StringVar()
+        self.ano_veiculo = StringVar()
+        self.placa_veiculo = StringVar()
+        self.cliente_id = StringVar()
         self.nome_entry = None
         self.telefone_entry = None
         self.treeview_cliente = None
         self.limpa_tela_principal()
         self.limpa_tela_cliente()
         self.select_cliente()
-        self.atualiza_combobox()
+        self.atualiza_combobox_inicial()
         root.mainloop()
-
     def tela_inicial(self):
         self.root.title("Ficha de Serviço - Mecânica Coin")
         self.root.configure(background='#e1e5e8')
         self.root.geometry("1920x1080")
         self.root.resizable(False, False)
-
     def frames_tela(self):
         self.frame1=Frame(self.root)
         self.frame1.place(relx=0.04, rely=0.02, relwidth=0.9, relheight=0.12)
 
         self.frame2 = Frame(self.root)
         self.frame2.place(relx=0.04, rely=0.16, relwidth=0.9, relheight=0.65)
-
     def widgets_frame(self):
         self.btn_tela_cad_cli = Button(self.frame1, text="Cadastro de Cliente", font=('Georgia 10'), command=self.tela_cadastro_cliente)
         self.btn_tela_cad_cli.place(relx=0.7, rely=0.18, relheight=0.2, relwidth=0.1)
@@ -162,10 +164,10 @@ class Application(Funcs):
         self.mobra_entry1 = Entry(self.frame2, font=('Georgia 15'), justify="right")
         self.mobra_entry1.place(relx=0.7, rely=0.81, relheight=0.035, relwidth=0.1)
     def combobox(self):
-        self.box_cliente = ttk.Combobox(root, values=lista_de_clientes)
+        self.box_cliente = ttk.Combobox(root, values=lista_clientes)
         self.box_cliente.place(relx=0.07, rely=0.045, relheight=0.025, relwidth=0.5)
 
-        self.box_veiculo = ttk.Combobox(root, values=listaveiculos)
+        self.box_veiculo = ttk.Combobox(root, values=lista_veiculos)
         self.box_veiculo.place(relx=0.07, rely=0.098, relheight=0.025, relwidth=0.5)
     def tela_cadastro_cliente(self):
         self.tela_cliente = Toplevel(self.root)
@@ -248,10 +250,10 @@ class Application(Funcs):
         self.entry_placa_veiculo = Entry(self.tela_veiculo, font="Georgia 15")
         self.entry_placa_veiculo.place(relx=0.35, rely=0.19, relheight=0.04, relwidth=0.2)
 
-        self.box_cliente_cad_cli = ttk.Combobox(self.tela_veiculo, values=lista_de_clientes)
+        self.box_cliente_cad_cli = ttk.Combobox(self.tela_veiculo, values=[])
         self.box_cliente_cad_cli.place(relx=0.1, rely=0.35, relheight=0.04, relwidth=0.45)
 
-        self.btn_cadastra_veic = Button(self.tela_veiculo, text="Cadastrar Veículo", font=('Georgia  10'))
+        self.btn_cadastra_veic = Button(self.tela_veiculo, text="Cadastrar Veículo", font=('Georgia  10'), command=self.add_veiculo)
         self.btn_cadastra_veic.place(relx=0.75, rely=0.2, relheight=0.04, relwidth=0.2)
 
         self.treeview_veiculo = ttk.Treeview(self.tela_veiculo, columns=('1', '2', '3', '4', '5'), height=15, show='headings')
@@ -268,6 +270,8 @@ class Application(Funcs):
         self.treeview_veiculo.column('5', anchor=CENTER, stretch=NO, width=100)
 
         self.treeview_veiculo.place(relx=0.095, rely=0.4, relwidth=0.6, relheight=0.55)
+
+        self.atualiza_combobox_veiculo()
 
 if __name__ == "__main__":
     app = Application(root)

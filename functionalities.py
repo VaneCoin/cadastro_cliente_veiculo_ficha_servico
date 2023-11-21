@@ -53,9 +53,9 @@ class Funcs():
             cliente_id = self.cursor.lastrowid
             self.desconecta_bd()
 
-            global lista_de_clientes
+            global lista_clientes
             novo_cliente = (cliente_id, self.nome_cliente_entry, self.telefone_cliente_entry)
-            lista_de_clientes.append(novo_cliente)
+            lista_clientes.append(novo_cliente)
 
             self.select_cliente()
             self.limpa_tela_cliente()
@@ -82,24 +82,69 @@ class Funcs():
             self.treeview_cliente.delete(*self.treeview_cliente.get_children())
             self.conecta_bd()
             self.cursor.execute("SELECT * FROM CLIENTE ORDER BY CLIENTE_ID;")
-            global lista_de_clientes
-            lista_de_clientes = self.cursor.fetchall()
+            global lista_clientes
+            lista_clientes = self.cursor.fetchall()
             self.desconecta_bd()
 
-            for i in lista_de_clientes:
+            for i in lista_clientes:
                 self.treeview_cliente.insert("", END, values=i)
 
-            nomes_formatados = [self.formata_lista_clientes(cliente) for cliente in lista_de_clientes]
+            nomes_formatados = [self.formata_lista_clientes(cliente) for cliente in lista_clientes]
             self.box_cliente['values'] = nomes_formatados
-    def atualiza_combobox(self):
+    def atualiza_combobox_inicial(self):
         self.conecta_bd()
         self.cursor.execute("SELECT * FROM CLIENTE ORDER BY CLIENTE_ID;")
-        global lista_de_clientes
-        lista_de_clientes = self.cursor.fetchall()
+        global lista_clientes
+        lista_clientes = self.cursor.fetchall()
         self.desconecta_bd()
 
-        nomes_formatados = [self.formata_lista_clientes(cliente) for cliente in lista_de_clientes]
+        nomes_formatados = [self.formata_lista_clientes(cliente) for cliente in lista_clientes]
         self.box_cliente['values'] = nomes_formatados
+    def atualiza_combobox_veiculo(self):
+        self.conecta_bd()
+        self.cursor.execute("SELECT * FROM CLIENTE ORDER BY CLIENTE_ID;")
+        global lista_clientes
+        lista_clientes = self.cursor.fetchall()
+        self.desconecta_bd()
 
+        nomes_formatados = [self.formata_lista_clientes(cliente) for cliente in lista_clientes]
+        self.box_cliente_cad_cli['values'] = nomes_formatados
     def formata_lista_clientes(self, cliente):
         return f"{cliente[0]} - {cliente[1]} - {cliente[2]}"
+    def add_veiculo(self):
+        self.entry_marca_veiculo = self.marca_veiculo.get()
+        self.entry_modelo_veiculo = self.modelo_veiculo.get()
+        self.entry_ano_veiculo = self.ano_veiculo.get()
+        self.entry_placa_veiculo = self.placa_veiculo.get()
+        self.box_cliente_cad_cli = self.cliente_id.get()
+
+        if self.entry_marca_veiculo and self.entry_modelo_veiculo and entry_ano_veiculo and entry_placa_veiculo and box_cliente_cad_cli:
+            self.conecta_bd()
+            self.cursor.execute("INSERT INTO VEICULO (MARCA, MODELO, ANO, PLACA, CLIENTE_ID) VALUES(?, ?, ?, ?, ?)", (self.entry_marca_veiculo, self.entry_modelo_veiculo, self.entry_ano_veiculo, self.entry_placa_veiculo, self.box_cliente_cad_cli))
+            self.conn.commit()
+            self.desconecta_bd()
+
+            global lista_veiculos
+            novo_veiculo = (self.entry_marca_veiculo, self.entry_modelo_veiculo, self.entry_ano_veiculo, self.entry_placa_veiculo, self.box_cliente_cad_cli)
+            lista_veiculos.append(novo_veiculo)
+
+            # self.select_cliente()
+            # self.limpa_tela_cliente()
+        else:
+            messagebox.showerror("", "Preencha todos os dados para cadastrar o veículo")
+    def deleta_cliente(self):
+        item_selecionado = self.treeview_cliente.selection()
+        if item_selecionado:
+            retorno = messagebox.askquestion("", "Você deseja excluir o cliente selecionado?")
+            if retorno == "yes":
+                cliente_id = self.treeview_cliente.item(item_selecionado, 'values')[0]
+                self.conecta_bd()
+                self.cursor.execute("DELETE FROM CLIENTE WHERE CLIENTE_ID=?", (cliente_id,))
+                self.conn.commit()
+                self.desconecta_bd()
+                self.select_cliente()
+                messagebox.showinfo("", "Cliente excluido com sucesso")
+            else:
+                messagebox.showinfo("", "Operação cancelada")
+        else:
+            messagebox.showinfo("", "Selecione um cliente para excluir")
